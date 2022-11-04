@@ -6,7 +6,7 @@ for(var country of countries) {
       <td>${country.name.official}</td>
       <td>${country.region}</td>
       <td>${country.population}</td>
-      <td><img height="55 rem" width="80 rem" src='${country.flags.png}'/></td>
+      <td><img width="80rem" src='${country.flags.png}'/></td>
   </tr>`;
   }
   
