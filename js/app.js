@@ -31,7 +31,7 @@ for(var currency of currencies) {
   document.getElementById('currencies').innerHTML = htmlString;
 
   var trs = document.getElementsByTagName('tr');
- for(var i=0; i<trs.length; i++) { 
+ for(var i = 1; i < trs.length; i++) { 
   var tr = trs[i];
   tr.onmouseenter = function(e){
    e.currentTarget.classList.add('bg-success')
@@ -40,13 +40,19 @@ for(var currency of currencies) {
     e.currentTarget.classList.remove('bg-success')
   }
  }
-
 }
 
-fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=20221110&json').then(res => res.json()).then(function(data) {
-  window.currencies = data;
-  renderCurrencies(data);
-});
+function getCurrencies(date){
+  document.getElementById('search').value= '';
+  fetch(`https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=${date}&json`).then(res => res.json()).then(function(data) {
+    window.currencies = data;
+    renderCurrencies(data);
+  });
+}
+
+var currentDate = '2022-11-11';
+getCurrencies(currentDate.replaceAll('-',''));
+document.getElementById('search-date').value = currentDate;
 
 var search = document.getElementById('search');
 search.onkeyup = function(e) {
@@ -54,4 +60,7 @@ search.onkeyup = function(e) {
   filterCurrencies(searchValue.trim().toLowerCase());
  }
 
- 
+ document.getElementById('search-date').onchange = function(e){
+  var date = e.currentTarget.value.replaceAll('-','');
+  getCurrencies(date)
+ }
